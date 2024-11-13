@@ -6,7 +6,7 @@ This script is designed to be run first, to prepare am XML file, which you can t
 
 ## Usage
 
-First put your custom cards in the a directory called `cards` (this is what mpcfill uses). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
+First put your custom cards in a directory called `cards` (this is what MPC Autofill uses, so it's important). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
 
 ### Number of copies
 
