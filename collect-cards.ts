@@ -1,5 +1,4 @@
 import type { CardFile } from "./types.ts";
-import { getFileHash } from "./util.ts";
 
 const IMAGE_EXTS = /\.(jpg|jpeg|png)$/i;
 const FILENAME_REGEX =
@@ -9,16 +8,27 @@ export async function collectCards(
   inputDir: string,
   defaultBack: string,
   verbose: boolean
-): Promise<CardFile[]> {
+): Promise<{ cards: CardFile[]; foundDefaultBack: string | null }> {
   const imageFiles: string[] = [];
+  let foundDefaultBack: string | null = null;
   try {
     for await (const entry of Deno.readDir(inputDir)) {
       if (entry.isFile && IMAGE_EXTS.test(entry.name)) {
         imageFiles.push(entry.name);
       }
+      if (entry.isFile && entry.name.startsWith(`${defaultBack}.`)) {
+        const relativePath = `${inputDir}/${entry.name}`;
+        const absolutePath = new URL(relativePath, import.meta.url);
+        const path = decodeURIComponent(absolutePath.pathname);
+        foundDefaultBack = path;
+      }
     }
   } catch (e) {
-    console.error("Error reading input-dir:", inputDir, "– are you sure it exists?");
+    console.error(
+      "Error reading input-dir:",
+      inputDir,
+      "– are you sure it exists?"
+    );
     Deno.exit(1);
   }
 
@@ -27,44 +37,27 @@ export async function collectCards(
   );
 
   // Make card objects
-  const cardFilePromises: Promise<CardFile>[] = imageFiles.map(
-    async (filename) => {
-      const path = `${inputDir}/${filename}`;
-      const match = FILENAME_REGEX.exec(filename);
-      const extension = match?.groups?.extension;
-      let name = match?.groups?.name + (extension ? `.${extension}` : "");
-      name = name.replaceAll("(", "").replaceAll(")", "");
-      let nameWithoutExtension = match?.groups?.name || filename.split(".")[0];
-      nameWithoutExtension = nameWithoutExtension
-        .replaceAll("(", "")
-        .replaceAll(")", "");
+  const cardFiles: CardFile[] = imageFiles.map((filename) => {
+    const relativePath = `${inputDir}/${filename}`;
+    const absolutePath = new URL(relativePath, import.meta.url);
+    const path = decodeURIComponent(absolutePath.pathname);
+    const match = FILENAME_REGEX.exec(filename);
+    const copies = match?.groups?.copies ? parseInt(match.groups.copies) : 1;
+    const back = match?.groups?.back;
+    const nameWithoutExtension = match?.groups?.name || filename;
 
-      const computedHash = (await getFileHash(path)).slice(0, 33);
-      const existingId = match?.groups?.hash;
-      const hash = existingId ? existingId : computedHash;
-
-      const copies = match?.groups?.copies ? parseInt(match.groups.copies) : 1;
-      const back = match?.groups?.back || defaultBack;
-      const renameTo = `${nameWithoutExtension} (${hash}).${extension}`;
-
-      return {
-        name,
-        nameWithoutExtension,
-        filename,
-        path,
-        renameTo,
-        hash,
-        copies,
-        back,
-        isCardBack: false, // Updated later
-      };
-    }
-  );
-
-  const cardFiles = await Promise.all(cardFilePromises);
+    return {
+      nameWithoutExtension,
+      filename,
+      path,
+      copies,
+      back,
+      isCardBack: false, // Will be updated later
+    };
+  });
 
   // Get names of all cardbacks
-  const allCardbacks = cardFiles.map((card) => card.back);
+  const allCardbacks = cardFiles.map((card) => card.back).filter(Boolean);
 
   // Tag cardbacks (any cards that are used as cardbacks)
   const taggedCardBacks = cardFiles.map((card, index) => {
@@ -84,19 +77,19 @@ export async function collectCards(
   const withCardBacks = taggedCardBacks.map((card, index) => {
     // shortcut, if the cardback is "next", use the next card in the list
     if (card.back === "next") {
-      card.back = taggedCardBacks[index + 1]?.hash;
+      card.back = taggedCardBacks[index + 1]?.path;
       return card;
     }
     const cardback = cardFiles.find(
       (cb) => cb.nameWithoutExtension === card.back
     );
     if (cardback) {
-      card.back = cardback.hash;
+      card.back = cardback.path;
     }
     return card;
   });
 
   if (verbose) console.log("Card files:", withCardBacks);
 
-  return withCardBacks;
+  return { cards: withCardBacks, foundDefaultBack };
 }

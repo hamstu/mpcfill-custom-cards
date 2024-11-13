@@ -2,7 +2,7 @@ import xmlFormat from "npm:xml-formatter";
 
 import { CardFile, XMLConfig } from "./types.ts";
 
-export function buildXML(cards: CardFile[], config: XMLConfig): string {
+export function buildXML(cards: CardFile[], defaultBack: string, config: XMLConfig): string {
   let quantity = 0;
   const fronts = [];
   const backs = [];
@@ -21,10 +21,10 @@ export function buildXML(cards: CardFile[], config: XMLConfig): string {
       (_, i) => slotCounter + i
     ).join(",");
     fronts.push({
-      id: card.hash,
+      id: card.path,
       slots: frontSlots,
-      name: card.name,
-      query: card.name,
+      name: card.filename,
+      query: card.filename,
     });
     quantity += card.copies;
 
@@ -33,10 +33,10 @@ export function buildXML(cards: CardFile[], config: XMLConfig): string {
         backMap.set(card.back, {
           slots: frontSlots,
           name:
-            cards.find((c) => c.hash === card.back)?.name ||
+            cards.find((c) => c.path === card.back)?.filename ||
             "Unknown Back Name",
           query:
-            cards.find((c) => c.hash === card.back)?.name ||
+            cards.find((c) => c.path === card.back)?.filename ||
             "Unknown Back Query",
         });
       } else {
@@ -80,7 +80,7 @@ export function buildXML(cards: CardFile[], config: XMLConfig): string {
     <backs>
         ${backsXML}
     </backs>
-    <!-- <cardback></cardback> -->
+    <cardback>${defaultBack}</cardback>
 </order>`.trim();
 
   // @ts-expect-error - Deno doesn't understand the types for this

@@ -5,12 +5,9 @@ export type XMLConfig = {
 };
 
 export type CardFile = {
-  nameWithoutExtension: string;
-  name: string;
   filename: string;
+  nameWithoutExtension: string;
   path: string;
-  renameTo?: string;
-  hash: string;
   copies: number;
   back?: string
   isCardBack: boolean
