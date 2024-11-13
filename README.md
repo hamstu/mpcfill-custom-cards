@@ -1,6 +1,6 @@
 # MPCFill Custom Cards
 
-This is a simple, command line application that prepares an XML file for [MPCFill](https://github.com/chilli-axe/mpc-autofill) to upload and autofill custom cards from your local hard drive (vs. MPCFill's default behavior which pulls images down from indexed Google Drives).
+This is a simple, command line application that prepares an XML file for [MPC Autofill](https://github.com/chilli-axe/mpc-autofill) to upload and autofill custom cards from your local hard drive (vs. MPCFill's default behavior which pulls images down from indexed Google Drives).
 
 This script is designed to be run first, to prepare am XML file, which you can then run with MPCFill as usual. In the future it will support modifying already created XML files.
 
@@ -73,6 +73,21 @@ Run with verbose and debug logs:
 ./mpcfill-custom-cards --dry-run --verbose
 ```
 
+### Creating the order
+
+Once this script has run, you can run `mpc-autofill` in the same directory and it should see your custom built XML and properly autofill the images.
+
 ## How it works
 
 When MPCFill runs it looks for cards that may already be downloaded in a `./cards` directory. By modifying the filenames of your custom images, moving them, and adding references in an XML file, we can have MPCFill upload them as if they were pulled from remote Google Drives. This script does that by parsing your input directory and producing an XML that will corectly reference your custom images.
+
+## Local Development
+
+This script is built with Deno and TypeScript.
+
+```bash
+git clone git@github.com:hamstu/mpcfill-custom-cards.git
+cd mpcfill-custom-cards
+
+deno run --allow-read --allow-write main.ts --dry-run --verbose
+```
