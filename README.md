@@ -13,7 +13,7 @@ First put your custom cards in a directory called `cards` (can be changed, if yo
 To increase the number of copies of a card, put `[c-N]` in the filename, where `N` is the number of copies you want. E.g., the following will put 4 copies of the card in your order.
 
 ```
-custom-cards
+cards
 ├── Counterspell [c-4].jpeg
 ├── default-back.png
 ```
@@ -23,7 +23,7 @@ custom-cards
 Cards will use the card back of a file named `default-back.[png|jpg|jpeg]` by default. But if it's an MDFC or you want to override that, you can do it with `[b-Card Name]` tag. Where `Card Name` is the name (without file extension) of the card you want to use as a back. Example:
 
 ```
-custom-cards
+cards
 ├── Counterspell [c-4] [b-My Custom Back].jpeg
 ├── My Custom Back.jpeg
 ├── default-back.png
@@ -32,7 +32,7 @@ custom-cards
 For convenience you can also use the `[b-next]` tag, which will use the next card in alphebetical order as the card back. **You must ensure the cards are ordered correctly when sorted alphabetically –  e.g., by renaming them – for this to work.**
 
 ```
-custom-cards
+cards
 ├── 1 - Ojer Taq, Deepest Foundation [b-next].jpg
 ├── 2 - Temple of Civilization.jpg
 ├── default-back.png
@@ -42,12 +42,12 @@ Note how numbers are prefixed on the cards above to ensure sequential ordering.
 
 ### Running the script
 
-Now that your images are ready, head to releases to download the latest release for your system. Place the executable in the same directory as your `custom-cards` folder.
+Now that your images are ready, head to releases to download the latest release for your system. Place the executable in the same directory as your `cards` folder.
 
 Then you can run it from the command line:
 
 ```bash
-Usage: mpcfill-custom-cards [OPTIONS...]
+Usage: mpcfill-cards [OPTIONS...]
 
 Optional flags:
   -h, --help                Display this help and exit
@@ -65,13 +65,13 @@ Optional flags:
 Run with defaults. Copies images and creates an XML.
 
 ```bash
-./mpcfill-custom-cards
+./mpcfill-cards
 ```
 
 Run with verbose and debug logs:
 
 ```bash
-./mpcfill-custom-cards --dry-run --verbose
+./mpcfill-cards --dry-run --verbose
 ```
 
 ### Creating the order
@@ -87,8 +87,8 @@ When MPCFill runs it looks for XML files in the current directory. By crafting a
 This script is built with Deno and TypeScript.
 
 ```bash
-git clone git@github.com:hamstu/mpcfill-custom-cards.git
-cd mpcfill-custom-cards
+git clone git@github.com:hamstu/mpcfill-cards.git
+cd mpcfill-cards
 
 deno run --allow-read --allow-write main.ts --dry-run --verbose
 ```
