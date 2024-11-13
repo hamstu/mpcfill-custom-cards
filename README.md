@@ -6,7 +6,7 @@ This script is designed to be run first, to prepare am XML file, which you can t
 
 ## Usage
 
-First put your custom cards in a directory called `cards` (this is what MPC Autofill uses, so it's important). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
+First put your custom cards in a directory called `cards` (can be changed, if you like). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
 
 ### Number of copies
 
@@ -80,7 +80,7 @@ Once this script has run, you can run `mpc-autofill` in the same directory and i
 
 ## How it works
 
-When MPCFill runs it looks for cards that may already be downloaded in a `./cards` directory. By modifying the filenames of your custom images, moving them, and adding references in an XML file, we can have MPCFill upload them as if they were pulled from remote Google Drives. This script does that by parsing your input directory and producing an XML that will corectly reference your custom images.
+When MPCFill runs it looks for XML files in the current directory. By crafting an XML with absolute file paths we can force it to upload and autofill our local images, instead of trying to fetch them from Google Drives.
 
 ## Local Development
 
