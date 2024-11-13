@@ -2,7 +2,7 @@
 
 This is a simple, command line application that prepares an XML file for [MPC Autofill](https://github.com/chilli-axe/mpc-autofill) to upload and autofill custom cards from your local hard drive (vs. MPCFill's default behavior which pulls images down from indexed Google Drives).
 
-This script is designed to be run first, to prepare am XML file, which you can then run with MPCFill as usual. In the future it will support modifying already created XML files.
+This script is designed to be run first, to prepare am XML file, which you can then run with MPCFill as usual.
 
 ## Usage
 
