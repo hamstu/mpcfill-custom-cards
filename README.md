@@ -6,7 +6,7 @@ This script is designed to be run first, to prepare am XML file, which you can t
 
 ## Usage
 
-First prepare a directory of custom cards in a directory called `custom-cards` (this can be changed). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
+First put your custom cards in the a directory called `cards` (this is what mpcfill uses). You can name them however you want, but there are some special modifiers you can use to change number of copies or use custom backs.
 
 ### Number of copies
 
@@ -51,11 +51,12 @@ Usage: mpcfill-custom-cards [OPTIONS...]
 
 Optional flags:
   -h, --help                Display this help and exit
-  -i, --input-dir <dir>     Input directory for the custom card images (defaults to ./custom-cards)
-  -o, --output-dir <dir>    Output directory for the card images (defaults to ./cards)
+  -i, --input-dir <dir>     Input directory for the custom card images (defaults to ./cards)
   -f, --output-file <file>  Output path for the card XML (defaults to ./cards.xml)
   -b, --default-back <id>   Name (without file extension) of the default card back image (defaults to 'default-back')
-  -d, --dry-run             Run script without writing or modifying any files
+  -s, --stock <stock>       Stock type for the cards (defaults to '(S30) Standard Smooth')
+  -ff, --foil               Enable foil printing
+  -d, --dry-run             Run script without writing any files
   -v, --verbose             Print verbose output to the terminal
 ```
 
@@ -91,3 +92,11 @@ cd mpcfill-custom-cards
 
 deno run --allow-read --allow-write main.ts --dry-run --verbose
 ```
+
+To build
+
+```bash
+./build.sh
+```
+
+Then check the releases folder. Currently it build for mac OS (arm/intel) and Windows. [Linux could be added easily as it's supported by Deno](https://docs.deno.com/runtime/reference/cli/compiler/#supported-targets).
