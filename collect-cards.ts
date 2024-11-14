@@ -1,3 +1,4 @@
+import { dirname, join } from "https://deno.land/std@0.224.0/path/mod.ts";
 import type { CardFile } from "./types.ts";
 
 const IMAGE_EXTS = /\.(jpg|jpeg|png)$/i;
@@ -18,9 +19,8 @@ export async function collectCards(
       }
       if (entry.isFile && entry.name.startsWith(`${defaultBack}.`)) {
         const relativePath = `${inputDir}/${entry.name}`;
-        const absolutePath = new URL(relativePath, import.meta.url);
-        const path = decodeURIComponent(absolutePath.pathname);
-        foundDefaultBack = path;
+        const absolutePath = Deno.realPathSync(relativePath);
+        foundDefaultBack = absolutePath;
       }
     }
   } catch (e) {
@@ -39,8 +39,7 @@ export async function collectCards(
   // Make card objects
   const cardFiles: CardFile[] = imageFiles.map((filename) => {
     const relativePath = `${inputDir}/${filename}`;
-    const absolutePath = new URL(relativePath, import.meta.url);
-    const path = decodeURIComponent(absolutePath.pathname);
+    const path = Deno.realPathSync(relativePath);
     const match = FILENAME_REGEX.exec(filename);
     const copies = match?.groups?.copies ? parseInt(match.groups.copies) : 1;
     const back = match?.groups?.back;

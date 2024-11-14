@@ -1,8 +1,10 @@
-import xmlFormat from "npm:xml-formatter";
-
 import { CardFile, XMLConfig } from "./types.ts";
 
-export function buildXML(cards: CardFile[], defaultBack: string, config: XMLConfig): string {
+export function buildXML(
+  cards: CardFile[],
+  defaultBack: string,
+  config: XMLConfig
+): string {
   let quantity = 0;
   const fronts = [];
   const backs = [];
@@ -55,16 +57,26 @@ export function buildXML(cards: CardFile[], defaultBack: string, config: XMLConf
   const frontsXML = fronts
     .map(
       ({ id, slots, name, query }) =>
-        `<card>\n<id>${id}</id>\n<slots>${slots}</slots>\n<name>${name}</name>\n<query>${query}</query>\n</card>`
+        `<card>
+           <id>${id}</id>
+           <slots>${slots}</slots>
+           <name>${name}</name>
+           <query>${query}</query>
+         </card>`
     )
-    .join("\n");
+    .join("\n        ");
 
   const backsXML = backs
     .map(
       ({ id, slots, name, query }) =>
-        `<card>\n<id>${id}</id>\n<slots>${slots}</slots>\n<name>${name}</name>\n<query>${query}</query>\n</card>`
+        `<card>
+           <id>${id}</id>
+           <slots>${slots}</slots>
+           <name>${name}</name>
+           <query>${query}</query>
+        </card>`
     )
-    .join("\n");
+    .join("\n        ");
 
   const xml = `
 <order>
@@ -83,8 +95,5 @@ export function buildXML(cards: CardFile[], defaultBack: string, config: XMLConf
     <cardback>${defaultBack}</cardback>
 </order>`.trim();
 
-  // @ts-expect-error - Deno doesn't understand the types for this
-  const formatted = xmlFormat(xml, { collapseContent: true });
-
-  return formatted;
+  return xml;
 }

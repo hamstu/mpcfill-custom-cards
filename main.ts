@@ -13,12 +13,13 @@ async function main(inputArgs: string[]): Promise<void> {
   }
 
   const outputFile: string = args["output-file"] || "cards.xml";
-  const inputDir: string = args["input-dir"] || "./cards";
   const defaultBack: string = args["default-back"] || "default-back";
   const dryRun: boolean = args["dry-run"] || false;
   const verbose: boolean = args["verbose"] || false;
   const stock: string = args["stock"] || "(S30) Standard Smooth";
   const foil: boolean = args["foil"] || false;
+
+  const inputDir: string = "./cards";
 
   const { cards, foundDefaultBack } = await collectCards(
     inputDir,
@@ -57,7 +58,7 @@ async function main(inputArgs: string[]): Promise<void> {
 
   if (!dryRun) await Deno.writeTextFile(outputFile, xml);
   console.log("✅ Wrote,", outputFile, "to disk.");
-  console.log("You are ready to run MPCFill");
+  console.log("You are ready to run MPC Autofill.");
 }
 
 main(Deno.args);

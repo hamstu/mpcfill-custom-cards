@@ -6,15 +6,13 @@ export function parseArguments(args: string[]): Args {
   const booleanArgs = ["dry-run", "verbose", "foil"];
 
   // All string arguments
-  const stringArgs = ["output-file", "output-dir", "input-dir", "default-back", "stock"];
+  const stringArgs = ["output-file", "default-back", "stock"];
 
   // And a list of aliases
   const alias = {
     help: "h",
     "dry-run": "d",
     "output-file": "f",
-    "output-dir": "o",
-    "input-dir": "i",
     "default-back": "b",
     "verbose": "v",
     "stock": "s",
@@ -34,7 +32,6 @@ export function printHelp(): void {
   console.log(`Usage: mpcfill-custom-cards [OPTIONS...]`);
   console.log("\nOptional flags:");
   console.log("  -h, --help                Display this help and exit");
-  console.log("  -i, --input-dir <dir>     Input directory for the custom card images (defaults to ./cards)");
   console.log("  -f, --output-file <file>  Output path for the card XML (defaults to ./cards.xml)");
   console.log("  -b, --default-back <id>   Name (without file extension) of the default card back image (defaults to 'default-back')");
   console.log("  -s, --stock <stock>       Stock type for the cards (defaults to '(S30) Standard Smooth')");

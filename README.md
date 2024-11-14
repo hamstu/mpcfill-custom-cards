@@ -47,11 +47,10 @@ Now that your images are ready, head to releases to download the latest release 
 Then you can run it from the command line:
 
 ```bash
-Usage: mpcfill-cards [OPTIONS...]
+Usage: mpcfill-custom-cards [OPTIONS...]
 
 Optional flags:
   -h, --help                Display this help and exit
-  -i, --input-dir <dir>     Input directory for the custom card images (defaults to ./cards)
   -f, --output-file <file>  Output path for the card XML (defaults to ./cards.xml)
   -b, --default-back <id>   Name (without file extension) of the default card back image (defaults to 'default-back')
   -s, --stock <stock>       Stock type for the cards (defaults to '(S30) Standard Smooth')
@@ -65,18 +64,18 @@ Optional flags:
 Run with defaults. Copies images and creates an XML.
 
 ```bash
-./mpcfill-cards
+./mpcfill-custom-cards
 ```
 
 Run with verbose and debug logs:
 
 ```bash
-./mpcfill-cards --dry-run --verbose
+./mpcfill-custom-cards --dry-run --verbose
 ```
 
 ### Creating the order
 
-Once this script has run, you can run `mpc-autofill` in the same directory and it should see your custom built XML and properly autofill the images.
+Once this script has run, you can run MPC Autofill in the same directory and it should see your custom built XML and properly autofill the images.
 
 ## How it works
 
@@ -87,8 +86,8 @@ When MPCFill runs it looks for XML files in the current directory. By crafting a
 This script is built with Deno and TypeScript.
 
 ```bash
-git clone git@github.com:hamstu/mpcfill-cards.git
-cd mpcfill-cards
+git clone git@github.com:hamstu/mpcfill-custom-cards.git
+cd mpcfill-custom-cards
 
 deno run --allow-read --allow-write main.ts --dry-run --verbose
 ```
